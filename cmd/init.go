@@ -22,8 +22,8 @@ func InitialModel() model {
 	workPeriod := 25 * 60
 	restPeriod := 5 * 60
 	return model{
-		width:  w,
-		height: h,
+		width:  &w,
+		height: &h,
 		timer: timer{
 			timeRemaining: workPeriod,
 			workPeriod:    workPeriod,

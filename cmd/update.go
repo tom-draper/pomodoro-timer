@@ -32,7 +32,13 @@ func (m *model) initWorkPeriod() {
 }
 
 func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
-	switch msg.(type) {
+	switch msg := msg.(type) {
+	case tea.WindowSizeMsg:
+		if msg.Width != 0 || msg.Height != 0 {
+			*m.width = msg.Width
+			*m.height = msg.Height
+		}
+		return m, nil
 	case TickMsg:
 		if m.cancelNextTick {
 			m.cancelNextTick = false
@@ -48,9 +54,6 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			}
 			return m, tickEvery()
 		}
-	}
-
-	switch msg := msg.(type) {
 	case tea.KeyMsg:
 		switch msg.String() {
 		case "ctrl+c", "esc":

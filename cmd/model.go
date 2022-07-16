@@ -12,8 +12,8 @@ type timer struct {
 }
 
 type model struct {
-	width          int
-	height         int
+	width          *int
+	height         *int
 	styles         Styles
 	rest           bool
 	cancelNextTick bool
