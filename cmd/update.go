@@ -16,16 +16,9 @@ func tickEvery() tea.Cmd {
 	})
 }
 
-func doTick(waitTime time.Duration, paused *bool) tea.Cmd {
-	fmt.Println("Started")
-	return tea.Tick(waitTime, func(t time.Time) tea.Msg {
-		fmt.Println("Doing tick")
-		if !*paused {
-			fmt.Println("Returning tick")
-			return TickMsg(t)
-		}
-		fmt.Println("Retuning nil")
-		return nil
+func doTick() tea.Cmd {
+	return tea.Tick(time.Second*0, func(t time.Time) tea.Msg {
+		return TickMsg(t)
 	})
 }
 
@@ -37,13 +30,10 @@ func (m *model) initRestPeriod() {
 func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg.(type) {
 	case TickMsg:
-		if m.paused {
-			fmt.Println("Paused")
+		if m.cancelNextTick {
+			m.cancelNextTick = false
 			return m, nil
 		} else {
-			fmt.Println("Tick")
-			m.prevTick = time.Now()
-			m.owedTime = 0
 			m.timeRemaining--
 			if m.timeRemaining < 1 {
 				m.initRestPeriod()
@@ -61,11 +51,9 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case " ":
 			m.paused = !m.paused
 			if !m.paused {
-				// Wait the owed time from the second which was paused inside of
-				return m, doTick(m.owedTime, &m.paused)
-			} else {
-				m.owedTime = time.Since(m.prevTick)
+				return m, doTick()
 			}
+			m.cancelNextTick = true
 			return m, nil
 		}
 	}
