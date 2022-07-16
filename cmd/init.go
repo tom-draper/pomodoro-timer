@@ -19,8 +19,9 @@ func InitialModel() model {
 	profile := termenv.ColorProfile()
 	w, h := terminalDimensions()
 	return model{
-		width:  w,
-		height: h,
+		width:         w,
+		height:        h,
+		timeRemaining: 25 * 60,
 		styles: Styles{
 			runningTimer: func(str string) termenv.Style {
 				return termenv.String(str).Foreground(profile.Color("10")).Faint()
@@ -33,6 +34,5 @@ func InitialModel() model {
 }
 
 func (m model) Init() tea.Cmd {
-	// Just return `nil`, which means "no I/O right now, please."
-	return nil
+	return tickEvery()
 }
