@@ -6,5 +6,5 @@ Once started, the timer will alternate between a 25 minute work period followed 
 <code>esc</code> to exit\
 <code>space</code> to pause
 
-![Timer](https://user-images.githubusercontent.com/41476809/179353641-928b3ab2-405e-43cd-9abd-2c3a00be035b.png)
-![Rest](https://user-images.githubusercontent.com/41476809/179353642-92a42a11-1fb9-42de-8387-780c4dcca452.png)
+![Timer](https://user-images.githubusercontent.com/41476809/179353866-0ea03ab2-a775-42eb-b7fb-6ef32c3dd045.png)
+![Rest](https://user-images.githubusercontent.com/41476809/179353868-f5d53e44-7883-4a8b-abf6-0d8b8fc37711.png)
