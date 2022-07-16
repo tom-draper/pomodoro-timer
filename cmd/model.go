@@ -4,19 +4,26 @@ import (
 	"github.com/muesli/termenv"
 )
 
+type timer struct {
+	paused        bool
+	workPeriod    int
+	restPeriod    int
+	timeRemaining int
+}
+
 type model struct {
 	width          int
 	height         int
 	styles         Styles
-	paused         bool
 	rest           bool
 	cancelNextTick bool
-	timeRemaining  int
+	timer          timer
 }
 
 type Style func(string) termenv.Style
 
 type Styles struct {
-	runningTimer Style
-	stoppedTimer Style
+	restTimer Style
+	workTimer Style
+	faint     Style
 }

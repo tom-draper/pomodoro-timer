@@ -17,17 +17,28 @@ func terminalDimensions() (int, int) {
 
 func InitialModel() model {
 	profile := termenv.ColorProfile()
+	foreground := termenv.ForegroundColor()
 	w, h := terminalDimensions()
+	workPeriod := 25 * 60
+	restPeriod := 5 * 60
 	return model{
-		width:         w,
-		height:        h,
-		timeRemaining: 25 * 60,
+		width:  w,
+		height: h,
+		timer: timer{
+			timeRemaining: workPeriod,
+			workPeriod:    workPeriod,
+			restPeriod:    restPeriod,
+		},
+		rest: false,
 		styles: Styles{
-			runningTimer: func(str string) termenv.Style {
-				return termenv.String(str).Foreground(profile.Color("10")).Faint()
+			workTimer: func(str string) termenv.Style {
+				return termenv.String(str).Foreground(profile.Color("11"))
 			},
-			stoppedTimer: func(str string) termenv.Style {
-				return termenv.String(str).Foreground(profile.Color("6")).Faint()
+			restTimer: func(str string) termenv.Style {
+				return termenv.String(str).Foreground(profile.Color("10"))
+			},
+			faint: func(str string) termenv.Style {
+				return termenv.String(str).Foreground(foreground).Faint()
 			},
 		},
 	}

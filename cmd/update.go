@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"fmt"
 	"time"
 
 	tea "github.com/charmbracelet/bubbletea"
@@ -17,14 +16,19 @@ func tickEvery() tea.Cmd {
 }
 
 func doTick() tea.Cmd {
-	return tea.Tick(time.Second*0, func(t time.Time) tea.Msg {
+	return tea.Tick(time.Duration(0), func(t time.Time) tea.Msg {
 		return TickMsg(t)
 	})
 }
 
 func (m *model) initRestPeriod() {
 	m.rest = true
-	m.timeRemaining = 5 * 60
+	m.timer.timeRemaining = m.timer.restPeriod
+}
+
+func (m *model) initWorkPeriod() {
+	m.rest = false
+	m.timer.timeRemaining = m.timer.workPeriod
 }
 
 func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
@@ -34,10 +38,13 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			m.cancelNextTick = false
 			return m, nil
 		} else {
-			m.timeRemaining--
-			if m.timeRemaining < 1 {
-				m.initRestPeriod()
-				return m, nil
+			m.timer.timeRemaining--
+			if m.timer.timeRemaining < 1 {
+				if m.rest {
+					m.initWorkPeriod()
+				} else {
+					m.initRestPeriod()
+				}
 			}
 			return m, tickEvery()
 		}
@@ -49,12 +56,13 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case "ctrl+c", "esc":
 			return m, tea.Quit
 		case " ":
-			m.paused = !m.paused
-			if !m.paused {
+			m.timer.paused = !m.timer.paused
+			if m.timer.paused {
+				m.cancelNextTick = true // Cancel effects from the next tickEvery()
+				return m, nil
+			} else {
 				return m, doTick()
 			}
-			m.cancelNextTick = true
-			return m, nil
 		}
 	}
 	return m, nil
