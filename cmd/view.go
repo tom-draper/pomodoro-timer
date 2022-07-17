@@ -25,7 +25,7 @@ func formatTimer(timeRemaining int) string {
 
 func (m model) progressBar() string {
 	var progress strings.Builder
-	nBars := int(float32(*m.width) * 0.7)
+	nBars := int(float32(m.width) * 0.7)
 	totalPeriod := m.timer.workPeriod
 	timerStyle := m.styles.workTimer
 	if m.rest {
@@ -62,7 +62,7 @@ func (m model) View() string {
 
 	s := lipgloss.NewStyle().Align(lipgloss.Center).Render(sb.String())
 
-	return lipgloss.Place(*m.width, *m.height, lipgloss.Center, lipgloss.Center, s)
+	return lipgloss.Place(m.width, m.height, lipgloss.Center, lipgloss.Center, s)
 }
 
 func style(s string, style Style) string {
