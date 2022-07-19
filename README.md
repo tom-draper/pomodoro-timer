@@ -6,6 +6,8 @@ Once started, the timer will alternate between a 25 minute work period followed 
 <code>esc</code> to exit\
 <code>space</code> to pause
 
+<br>
+
 <p align="center">
 	<img src="https://user-images.githubusercontent.com/41476809/179353866-0ea03ab2-a775-42eb-b7fb-6ef32c3dd045.png">
 </p>
